@@ -1,5 +1,3 @@
-
-
 import tkinter as tk
 from PIL import Image, ImageDraw, ImageOps
 import numpy as np
@@ -9,6 +7,7 @@ import os
 # Загрузить модели
 m1 = keras.models.load_model("models/model_mnist.h5")
 m2 = keras.models.load_model("models/model_augmented.h5")
+
 
 class App:
     def __init__(self, master):
@@ -23,10 +22,8 @@ class App:
         self.canvas.bind("<B1-Motion>", self.draw)
         self.canvas.bind("<ButtonRelease-1>", self.on_release)
 
-
         self.image = Image.new("L", (self.canvas_size, self.canvas_size), color=255)
         self.draw_pil = ImageDraw.Draw(self.image)
-
 
         clear_btn = tk.Button(master, text="Очистить", command=self.clear)
         clear_btn.grid(row=1, column=0, pady=5)
@@ -40,12 +37,10 @@ class App:
         quit_btn = tk.Button(master, text="Выход", command=master.quit)
         quit_btn.grid(row=1, column=3, pady=5)
 
-
         self.label_m1 = tk.Label(master, text="Model 1: —", font=("Arial", 14))
         self.label_m1.grid(row=2, column=0, columnspan=2, sticky='w', padx=10)
         self.label_m2 = tk.Label(master, text="Model 2: —", font=("Arial", 14))
         self.label_m2.grid(row=2, column=2, columnspan=2, sticky='w', padx=10)
-
 
         self.last_x, self.last_y = None, None
         self.line_width = 18
@@ -55,7 +50,8 @@ class App:
         if self.last_x is None:
             self.last_x, self.last_y = x, y
 
-        self.canvas.create_line(self.last_x, self.last_y, x, y, width=self.line_width, fill='black', capstyle=tk.ROUND, smooth=True)
+        self.canvas.create_line(self.last_x, self.last_y, x, y, width=self.line_width, fill='black', capstyle=tk.ROUND,
+                                smooth=True)
         self.draw_pil.line([self.last_x, self.last_y, x, y], fill=0, width=self.line_width)
         self.last_x, self.last_y = x, y
 
@@ -93,8 +89,8 @@ class App:
         conf2 = float(p2[pred2])
         self.label_m1.config(text=f"Model 1: {pred1} (conf {conf1:.3f})")
         self.label_m2.config(text=f"Model 2: {pred2} (conf {conf2:.3f})")
-        print("Model1 probs:", np.round(p1,3))
-        print("Model2 probs:", np.round(p2,3))
+        print("Model1 probs:", np.round(p1, 3))
+        print("Model2 probs:", np.round(p2, 3))
 
 
 if __name__ == "__main__":
